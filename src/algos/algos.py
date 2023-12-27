@@ -49,7 +49,7 @@ def preprocess_dataset(initial_dataset: pd.DataFrame, date: dt.datetime="None"):
         days.append(delta)
     
     initial_dataset['Customer_For'] = days
-    initial_dataset['Customer_For'] = pd.to_datetime(initial_dataset['Customer_For'], errors='coerce')
+    initial_dataset['Customer_For'] = pd.to_numeric(initial_dataset['Customer_For'], errors='coerce')
 
     #Age of customer today 
     initial_dataset["Age"] = 2021-initial_dataset["Year_Birth"]
@@ -91,19 +91,21 @@ def preprocess_dataset(initial_dataset: pd.DataFrame, date: dt.datetime="None"):
     for i in object_cols:
         initial_dataset[i] = initial_dataset[[i]].apply(LE.fit_transform)
 
-    # creating a copy of data
-    ds = initial_dataset.copy()
-    
-    # creating a subset of dataframe by dropping the features on deals accepted and promotions
-    cols_del = ['AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1','AcceptedCmp2', 'Complain', 'Response']
-    ds = ds.drop(cols_del, axis=1)
-    
-    # scaling
-    scaler = StandardScaler()
-    scaler.fit(ds)
-    scaled_ds = pd.DataFrame(scaler.transform(ds),columns= ds.columns)
-
     return initial_dataset
+
+    # # creating a copy of data
+    # ds = initial_dataset.copy()
+    
+    # # creating a subset of dataframe by dropping the features on deals accepted and promotions
+    # cols_del = ['AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1','AcceptedCmp2', 'Complain', 'Response']
+    # ds = ds.drop(cols_del, axis=1)
+    
+    # # scaling
+    # scaler = StandardScaler()
+    # scaler.fit(ds)
+    # scaled_ds = pd.DataFrame(scaler.transform(ds), columns=ds.columns)
+
+    return scaled_ds
 
 
 def dimensionality_reduction(ds: pd.DataFrame, n_components=3):
