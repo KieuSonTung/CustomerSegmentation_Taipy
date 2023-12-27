@@ -3,3 +3,6 @@ test.py
 test.ipynb
 .vscode
 .data
+src/__pycache__/
+src/algos/__pycache__
+src/config/__pycache__
