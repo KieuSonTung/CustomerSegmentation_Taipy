@@ -20,7 +20,9 @@ def create_first_scenario(scenario_cfg):
 
 scenario = create_first_scenario(scenario_cfg)
 
-# read datasets
-dataset = scenario.initial_dataset.read()
+ds = scenario.preprocessed_dataset.read()
 
-# print('Hello World 2')
+results = scenario.trained_model.read()
+pred = results['Clusters']
+
+print(results)
