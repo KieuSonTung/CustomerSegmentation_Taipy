@@ -26,6 +26,14 @@ def create_first_scenario(scenario_cfg):
     tp.submit(scenario)
     return scenario
 
+def on_change(state, var_name, var_value):
+    if var_name in ['x_selected', 'y_selected']:
+        update_chart(state)
+        
+def on_init(state):
+    update_chart(state)
+
+
 scenario = create_first_scenario(scenario_cfg)
 
 # read dataset
@@ -37,8 +45,6 @@ pred = results['Clusters']
 
 # visualization
 heatmap_dataset = creation_heatmap_dataset(ds)
-
-# model management
 
 
 root_md = """
@@ -59,4 +65,4 @@ pages = {
 # Run the GUI
 if __name__ == '__main__':
     gui = Gui(pages=pages)
-    gui.run(title="Customer Segmetation", dark_mode=False, port=8866)
+    gui.run(title="Customer Segmetation", dark_mode=False, port=8866, use_reloader=True)

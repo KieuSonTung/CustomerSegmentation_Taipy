@@ -1,13 +1,9 @@
+
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-from matplotlib import colors
-
-
-#Setting up colors prefrences
-sns.set(rc={"axes.facecolor":"#FFF9ED","figure.facecolor":"#FFF9ED"})
-pallet = ["#682F2F", "#9E726F", "#D6B2B1", "#B9C0C9", "#9F8A78", "#F3AB60"]
-cmap = colors.ListedColormap(["#682F2F", "#9E726F", "#D6B2B1", "#B9C0C9", "#9F8A78", "#F3AB60"])
+# import sys
+# sys.path.append("src/utils")
+from src.utils.utils import AppPath
+from taipy.gui import Markdown
 
 
 def creation_scatter_dataset(ds: pd.DataFrame):
@@ -26,33 +22,38 @@ def creation_heatmap_dataset(ds: pd.DataFrame):
     
     return corrmat
 
-def update_plot(state):
-    # global x_selected, y_selected
-    # x_selected = state.x_selected
-    # y_selected = state.y_selected
-    # state.properties_scatter_dataset =  {"x":x_selected,
-    #                                      "y":y_selected}
-    state.corrmat = state.corrmat
+def read_data(file_path: str = AppPath.DATA_FILE_PATH) -> pd.DataFrame:
+    data = pd.read_csv(file_path)
+    # data = data.drop(["Unnamed: 0", "ID"], axis=1)
+    data["Dt_Customer"] = pd.to_datetime(data["Dt_Customer"], errors="coerce")
+    return data
+
+def update_chart(state):
+    global x_selected, y_selected
+    x_selected = state.x_selected
+    y_selected = state.y_selected
+
+    state.properties_histo = {"x": x_selected}
+    state.properties_scatter = {"x": x_selected, "y": y_selected}
+
+    state.data = state.data
 
 
-dv_graph_selector = ['Relative', 'Heatmap']
+dv_graph_selector = ['Histogram', 'Scatter', 'Heatmap']
 dv_graph_selected = dv_graph_selector[0]
 
-dv_data_visualization_md = """
-# Data **Visualization**{: .color-primary}
-<|{dv_graph_selected}|toggle|lov={dv_graph_selector}|>
+# Read the data
+data = read_data()
 
---------------------------------------------------------------------
+# Columns selection
+select_x = data.drop("Response", axis=1).columns.to_list()
+select_y = select_x
+x_selected = select_x[0]
+y_selected = select_y[0]
 
-<|part|render={dv_graph_selected == 'Scatter'}|
-### Scatter
-|>
+# Chart properties
+properties_histo = {}
+properties_scatter = {}
 
-<|part|render={dv_graph_selected == 'Heatmap'}|
-### Heatmap
 
-<|{heatmap_dataset}|chart|type=heatmap|z=Values|x=Columns|y=Index|height=1000px|width=1700px|>
-|>
-
-"""
-
+dv_data_visualization_md = Markdown("src/pages/data_visualization_md.md")
