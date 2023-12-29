@@ -1,6 +1,4 @@
-
 import pandas as pd
-from src.utils.utils import AppPath
 from taipy.gui import Markdown
 
 def creation_histo_dataset(ds: pd.DataFrame):

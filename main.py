@@ -5,7 +5,6 @@ from taipy.gui import Gui, Icon, navigate
 from src.config.config import scenario_cfg
 from taipy.config import Config 
 from src.pages.data_visualization import *
-# from src.pages.model_management import *
 
 
 # Load configuration
