@@ -5,6 +5,7 @@ from taipy.gui import Gui, Icon, navigate
 from src.config.config import scenario_cfg
 from taipy.config import Config 
 from src.pages.data_visualization import *
+from src.pages.model_management import *
 
 
 # Load configuration
@@ -58,14 +59,18 @@ root_md = """
 <|menu|label=Menu|lov={menu_lov}|on_action=menu_fct|>
 """
 
+page = "Data Visualization"
+
 menu_lov = [
-    ("Data Visualization", Icon('src/images/histogram_menu.svg', 'Data Visualization'))
+    ("Data Visualization", Icon('src/images/histogram_menu.svg', 'Data Visualization')),
+    ("Model Management", Icon('src/images/model.svg', 'Model Management'))
 ]
 
 # Define pages
 pages = {
     "/": root_md,
-    "Data-Visualization": dv_data_visualization_md
+    "Data-Visualization": dv_data_visualization_md,
+    "Model-Management": model_management_md
 }
 
 # Run the GUI
