@@ -1,14 +1,17 @@
 
 import pandas as pd
-# import sys
-# sys.path.append("src/utils")
 from src.utils.utils import AppPath
 from taipy.gui import Markdown
 
+def creation_histo_dataset(ds: pd.DataFrame):
+    histo_dataset = ds
+    
+    return histo_dataset
 
 def creation_scatter_dataset(ds: pd.DataFrame):
-    To_Plot = [ "Income", "Recency", "Customer_For", "Age", "Spent", "Is_Parent"]
-    scatter_dataset = ds[To_Plot]
+    # To_Plot = [ "Income", "Recency", "Customer_For", "Age", "Spent", "Is_Parent"]
+    # scatter_dataset = ds[To_Plot]
+    scatter_dataset = ds
     
     return scatter_dataset
 
@@ -22,12 +25,6 @@ def creation_heatmap_dataset(ds: pd.DataFrame):
     
     return corrmat
 
-def read_data(file_path: str = AppPath.DATA_FILE_PATH) -> pd.DataFrame:
-    data = pd.read_csv(file_path)
-    # data = data.drop(["Unnamed: 0", "ID"], axis=1)
-    data["Dt_Customer"] = pd.to_datetime(data["Dt_Customer"], errors="coerce")
-    return data
-
 def update_chart(state):
     global x_selected, y_selected
     x_selected = state.x_selected
@@ -36,20 +33,12 @@ def update_chart(state):
     state.properties_histo = {"x": x_selected}
     state.properties_scatter = {"x": x_selected, "y": y_selected}
 
-    state.data = state.data
+    state.histo_dataset = state.histo_dataset
+    state.scatter_dataset = state.scatter_dataset
 
 
 dv_graph_selector = ['Histogram', 'Scatter', 'Heatmap']
 dv_graph_selected = dv_graph_selector[0]
-
-# Read the data
-data = read_data()
-
-# Columns selection
-select_x = data.drop("Response", axis=1).columns.to_list()
-select_y = select_x
-x_selected = select_x[0]
-y_selected = select_y[0]
 
 # Chart properties
 properties_histo = {}

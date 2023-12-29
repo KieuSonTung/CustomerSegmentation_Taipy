@@ -6,7 +6,7 @@
 ### Histogram
 <|{x_selected}|selector|lov={select_x}|dropdown=True|label=Select x|>
 
-<|{data}|chart|type=histogram|rebuild|properties={properties_histo}|>
+<|{histo_dataset}|chart|type=histogram|rebuild|properties={properties_histo}|>
 |>
 
 <|part|render={dv_graph_selected == 'Scatter'}|
@@ -17,7 +17,7 @@
 <|{y_selected}|selector|lov={select_y}|dropdown|label=Select y|>
 |>
 
-<|{data}|chart|type=scatter|rebuild|properties={properties_scatter}|mode=markers|>
+<|{scatter_dataset}|chart|type=scatter|rebuild|properties={properties_scatter}|mode=markers|>
 |>
 
 <|part|render={dv_graph_selected == 'Heatmap'}|
