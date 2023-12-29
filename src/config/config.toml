@@ -13,13 +13,13 @@ default_data = "None"
 [DATA_NODE.trained_model]
 
 [TASK.preprocess_dataset]
-function = "algos.algos.preprocess_dataset:function"
+function = "algos.preprocess_dataset:function"
 inputs = [ "initial_dataset:SECTION", "date:SECTION",]
 outputs = [ "preprocessed_dataset:SECTION",]
 skippable = "False:bool"
 
 [TASK.train_model]
-function = "algos.algos.train_model:function"
+function = "algos.train_model:function"
 inputs = [ "preprocessed_dataset:SECTION",]
 outputs = [ "trained_model:SECTION",]
 skippable = "False:bool"

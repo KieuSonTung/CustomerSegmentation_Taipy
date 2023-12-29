@@ -1,7 +1,8 @@
 import sys
-sys.path.append('/Users/kieusontung/Library/CloudStorage/OneDrive-Personal/Work/Viettel/HoaPhat/CustomerSegmentation/src')
+# sys.path.append('/Users/kieusontung/Library/CloudStorage/OneDrive-Personal/Work/Viettel/HoaPhat/CustomerSegmentation/src')
+sys.path.append("src/algos")
 
-from algos.algos import *
+from algos import *
 from taipy import Config, Scope
 
 
