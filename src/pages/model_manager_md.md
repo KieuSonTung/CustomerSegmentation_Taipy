@@ -6,7 +6,7 @@
 ### Histogram
 <|{x_selected_mm}|selector|lov={select_x}|dropdown=True|label=Select x|>
 
-<|{histo_pred_dataset}|chart|type=histogram|rebuild|properties={properties_histo_pred}|>
+<|{histo_pred_dataset}|chart|type=histogram|rebuild|properties={properties_histo_pred}|layout={layout}|options={options}|>
 |>
 
 <|part|render={mm_graph_selected == 'Scatter'}|

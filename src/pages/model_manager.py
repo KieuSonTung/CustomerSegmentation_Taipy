@@ -82,5 +82,17 @@ algorithm_selected = algorithm_selector[0]
 properties_histo_pred = {}
 properties_scatter_pred = {}
 
+# Layout settings
+layout = {
+    "barmode": "overlay"
+}
+
+# Options
+options = [
+    {
+        "opacity": 0.3
+    }
+]
+
 # Page creation
 model_manager_md = Markdown("src/pages/model_manager_md.md")
