@@ -1,8 +1,9 @@
 import sys
+
 # sys.path.append('/Users/kieusontung/Library/CloudStorage/OneDrive-Personal/Work/Viettel/HoaPhat/CustomerSegmentation/src')
 sys.path.append("src/algos")
 
-from algos import *
+from algos import preprocess_dataset, train_model_AC, train_model_KM
 from taipy import Config, Scope
 
 
@@ -10,51 +11,60 @@ from taipy import Config, Scope
 # Creation of the datanodes
 ##############################################################################################################################
 
-path_to_csv = 'src/data/data.csv'
+path_to_csv = "src/data/data.csv"
 
 # path for csv and file_path for pickle
-initial_dataset_cfg = Config.configure_data_node(id="initial_dataset",
-                                             path=path_to_csv,
-                                             storage_type="csv",
-                                             has_header=True
-                                             )
+initial_dataset_cfg = Config.configure_data_node(
+    id="initial_dataset", path=path_to_csv, storage_type="csv", has_header=True
+)
 
 date_cfg = Config.configure_data_node(id="date", default_data="None")
 
 preprocessed_dataset_cfg = Config.configure_data_node(id="preprocessed_dataset")
 
-# the final datanode that contains the processed data
-trained_model_cfg = Config.configure_data_node(id="trained_model")
-
+# the final data nodes that contains the processed data
+predict_dataset_AC_cfg = Config.configure_csv_data_node(id="predict_dataset_AC")
+predict_dataset_KM_cfg = Config.configure_csv_data_node(id="predict_dataset_KM")
 
 ##############################################################################################################################
 # Creation of the tasks
 ##############################################################################################################################
 
 # initial_dataset --> preprocess dataset --> preprocessed_dataset
-task_preprocess_dataset_cfg = Config.configure_task(id="preprocess_dataset",
-                                                    input=[initial_dataset_cfg, date_cfg],
-                                                    function=preprocess_dataset,
-                                                    output=preprocessed_dataset_cfg)
+task_preprocess_dataset_cfg = Config.configure_task(
+    id="preprocess_dataset",
+    input=[initial_dataset_cfg, date_cfg],
+    function=preprocess_dataset,
+    output=preprocessed_dataset_cfg,
+)
 
 # preprocessed_dataset --> create train_model data --> trained_model
-task_train_model_cfg = Config.configure_task(id="train_model",
-                                                input=preprocessed_dataset_cfg,
-                                                function=train_model,
-                                                output=trained_model_cfg)
+task_train_model_AC_cfg = Config.configure_task(
+    id="train_model_AC",
+    input=preprocessed_dataset_cfg,
+    function=train_model_AC,
+    output=predict_dataset_AC_cfg,
+)
 
+task_train_model_KM_cfg = Config.configure_task(
+    id="train_model_KM",
+    input=preprocessed_dataset_cfg,
+    function=train_model_KM,
+    output=predict_dataset_KM_cfg,
+)
 
 ##############################################################################################################################
 # Creation of the scenario
 ##############################################################################################################################
 
 scenario_cfg = Config.configure_scenario(
-    id='customer_segmentation',
+    id="customer_segmentation",
     task_configs=[
         task_preprocess_dataset_cfg,
-        task_train_model_cfg
-    ]
+        task_train_model_AC_cfg,
+        task_train_model_KM_cfg,
+    ],
 )
 
-Config.export('src/config/config.toml')
-print('config.toml created')
+Config.export("src/config/config.toml")
+print("config.toml created")

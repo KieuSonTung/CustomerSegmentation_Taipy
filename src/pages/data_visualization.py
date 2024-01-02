@@ -38,11 +38,6 @@ def update_chart_dv(state):
     state.scatter_dataset = state.scatter_dataset
 
 
-def on_change(state, var_name, var_value):
-    if var_name in ["x_selected_dv", "y_selected_dv"]:
-        update_chart_dv(state)
-
-
 # Chart selection
 dv_graph_selector = ["Histogram", "Scatter", "Heatmap"]
 dv_graph_selected = dv_graph_selector[0]

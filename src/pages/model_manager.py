@@ -86,17 +86,12 @@ def update_chart_mm(state):
     }
 
 
-def on_change(state, var_name, var_value):
-    if var_name in ["x_selected_mm", "y_selected_mm"]:
-        update_chart_mm(state)
-
-
 # Chart selection
 mm_graph_selector = ["Histogram", "Scatter", "Metrics"]
 mm_graph_selected = mm_graph_selector[0]
 
 # Algorithm selection
-algorithm_selector = ["AC"]
+algorithm_selector = ["AgglomerativeClustering", "KMeans"]
 algorithm_selected = algorithm_selector[0]
 
 # Chart properties

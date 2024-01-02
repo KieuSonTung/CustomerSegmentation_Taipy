@@ -1,19 +1,20 @@
-#Importing the Libraries
+# Importing the Libraries
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.decomposition import PCA
-from sklearn.cluster import AgglomerativeClustering
+from sklearn.cluster import AgglomerativeClustering, KMeans
 import warnings
 import sys
 import datetime as dt
 from sklearn.model_selection import train_test_split
+
 if not sys.warnoptions:
     warnings.simplefilter("ignore")
 np.random.seed(42)
 
 
-def preprocess_dataset(initial_dataset: pd.DataFrame, date: dt.datetime="None"):
+def preprocess_dataset(initial_dataset: pd.DataFrame, date: dt.datetime = "None"):
     """This function preprocess the dataset to be used in the model
 
     Args:
@@ -28,53 +29,103 @@ def preprocess_dataset(initial_dataset: pd.DataFrame, date: dt.datetime="None"):
     initial_dataset = initial_dataset.dropna()
 
     # create feature "Customer_For" - how long has the user been a customer
-    initial_dataset['Dt_Customer'] = pd.to_datetime(initial_dataset['Dt_Customer'], format='%d-%m-%Y')
-    dates = [i.date() for i in initial_dataset['Dt_Customer']]
-    
+    initial_dataset["Dt_Customer"] = pd.to_datetime(
+        initial_dataset["Dt_Customer"], format="%d-%m-%Y"
+    )
+    dates = [i.date() for i in initial_dataset["Dt_Customer"]]
+
     d1 = max(dates)
-    
+
     days = []
     for i in dates:
         delta = d1 - i
         days.append(delta)
-    
-    initial_dataset['Customer_For'] = days
-    initial_dataset['Customer_For'] = pd.to_numeric(initial_dataset['Customer_For'], errors='coerce')
 
-    #Age of customer today 
-    initial_dataset["Age"] = 2021-initial_dataset["Year_Birth"]
+    initial_dataset["Customer_For"] = days
+    initial_dataset["Customer_For"] = pd.to_numeric(
+        initial_dataset["Customer_For"], errors="coerce"
+    )
 
-    #Total spendings on various items
-    initial_dataset["Spent"] = initial_dataset["MntWines"]+ initial_dataset["MntFruits"]+ initial_dataset["MntMeatProducts"]+ initial_dataset["MntFishProducts"]+ initial_dataset["MntSweetProducts"]+ initial_dataset["MntGoldProds"]
+    # Age of customer today
+    initial_dataset["Age"] = 2021 - initial_dataset["Year_Birth"]
 
-    #Deriving living situation by marital status"Alone"
-    initial_dataset["Living_With"]=initial_dataset["Marital_Status"].replace({"Married":"Partner", "Together":"Partner", "Absurd":"Alone", "Widow":"Alone", "YOLO":"Alone", "Divorced":"Alone", "Single":"Alone",})
+    # Total spendings on various items
+    initial_dataset["Spent"] = (
+        initial_dataset["MntWines"]
+        + initial_dataset["MntFruits"]
+        + initial_dataset["MntMeatProducts"]
+        + initial_dataset["MntFishProducts"]
+        + initial_dataset["MntSweetProducts"]
+        + initial_dataset["MntGoldProds"]
+    )
 
-    #Feature indicating total children living in the household
-    initial_dataset["Children"]=initial_dataset["Kidhome"]+initial_dataset["Teenhome"]
+    # Deriving living situation by marital status"Alone"
+    initial_dataset["Living_With"] = initial_dataset["Marital_Status"].replace(
+        {
+            "Married": "Partner",
+            "Together": "Partner",
+            "Absurd": "Alone",
+            "Widow": "Alone",
+            "YOLO": "Alone",
+            "Divorced": "Alone",
+            "Single": "Alone",
+        }
+    )
 
-    #Feature for total members in the householde
-    initial_dataset["Family_Size"] = initial_dataset["Living_With"].replace({"Alone": 1, "Partner":2})+ initial_dataset["Children"]
+    # Feature indicating total children living in the household
+    initial_dataset["Children"] = (
+        initial_dataset["Kidhome"] + initial_dataset["Teenhome"]
+    )
 
-    #Feature pertaining parenthood
-    initial_dataset["Is_Parent"] = np.where(initial_dataset.Children> 0, 1, 0)
+    # Feature for total members in the householde
+    initial_dataset["Family_Size"] = (
+        initial_dataset["Living_With"].replace({"Alone": 1, "Partner": 2})
+        + initial_dataset["Children"]
+    )
 
-    #Segmenting education levels in three groups
-    initial_dataset["Education"]=initial_dataset["Education"].replace({"Basic":"Undergraduate","2n Cycle":"Undergraduate", "Graduation":"Graduate", "Master":"Postgraduate", "PhD":"Postgraduate"})
+    # Feature pertaining parenthood
+    initial_dataset["Is_Parent"] = np.where(initial_dataset.Children > 0, 1, 0)
 
-    #For clarity
-    initial_dataset=initial_dataset.rename(columns={"MntWines": "Wines","MntFruits":"Fruits","MntMeatProducts":"Meat","MntFishProducts":"Fish","MntSweetProducts":"Sweets","MntGoldProds":"Gold"})
+    # Segmenting education levels in three groups
+    initial_dataset["Education"] = initial_dataset["Education"].replace(
+        {
+            "Basic": "Undergraduate",
+            "2n Cycle": "Undergraduate",
+            "Graduation": "Graduate",
+            "Master": "Postgraduate",
+            "PhD": "Postgraduate",
+        }
+    )
 
-    #Dropping some of the redundant features
-    to_drop = ["Marital_Status", "Dt_Customer", "Z_CostContact", "Z_Revenue", "Year_Birth", "ID"]
+    # For clarity
+    initial_dataset = initial_dataset.rename(
+        columns={
+            "MntWines": "Wines",
+            "MntFruits": "Fruits",
+            "MntMeatProducts": "Meat",
+            "MntFishProducts": "Fish",
+            "MntSweetProducts": "Sweets",
+            "MntGoldProds": "Gold",
+        }
+    )
+
+    # Dropping some of the redundant features
+    to_drop = [
+        "Marital_Status",
+        "Dt_Customer",
+        "Z_CostContact",
+        "Z_Revenue",
+        "Year_Birth",
+        "ID",
+    ]
     initial_dataset = initial_dataset.drop(to_drop, axis=1)
 
-    #Dropping the outliers by setting a cap on Age and income. 
-    initial_dataset = initial_dataset[(initial_dataset["Age"]<90)]
-    initial_dataset = initial_dataset[(initial_dataset["Income"]<600000)]
+    # Dropping the outliers by setting a cap on Age and income.
+    initial_dataset = initial_dataset[(initial_dataset["Age"] < 90)]
+    initial_dataset = initial_dataset[(initial_dataset["Income"] < 600000)]
 
     # label encoding
-    s = (initial_dataset.dtypes == 'object')
+    s = initial_dataset.dtypes == "object"
     object_cols = list(s[s].index)
 
     LE = LabelEncoder()
@@ -85,11 +136,11 @@ def preprocess_dataset(initial_dataset: pd.DataFrame, date: dt.datetime="None"):
 
     # # creating a copy of data
     # ds = initial_dataset.copy()
-    
+
     # # creating a subset of dataframe by dropping the features on deals accepted and promotions
     # cols_del = ['AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1','AcceptedCmp2', 'Complain', 'Response']
     # ds = ds.drop(cols_del, axis=1)
-    
+
     # # scaling
     # scaler = StandardScaler()
     # scaler.fit(ds)
@@ -102,18 +153,29 @@ def dimensionality_reduction(ds: pd.DataFrame, n_components=3):
     pca = PCA(n_components=n_components)
     pca.fit(ds)
 
-    cols = [f'col{i+1}' for i in range(n_components)]
+    cols = [f"col{i+1}" for i in range(n_components)]
     PCA_ds = pd.DataFrame(pca.transform(ds), columns=(cols))
 
     return PCA_ds
 
-def train_model(ds: pd.DataFrame):
+
+def train_model_AC(ds: pd.DataFrame):
     AC = AgglomerativeClustering(n_clusters=4)
 
     yhat_AC = AC.fit_predict(ds)
-    ds['Clusters'] = yhat_AC
+    ds["Clusters"] = yhat_AC
 
     return ds
+
+
+def train_model_KM(ds: pd.DataFrame):
+    KM = KMeans(n_clusters=4)
+
+    yhat_KM = KM.fit_predict(ds)
+    ds["Clusters"] = yhat_KM
+
+    return ds
+
 
 # def visualize_clusters(ds: pd.DataFrame):
 #     x = ds["col1"]

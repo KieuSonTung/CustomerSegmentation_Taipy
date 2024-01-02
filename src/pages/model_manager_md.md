@@ -1,6 +1,10 @@
 # **Model**{: .color-primary} Manager
 
+<|layout|columns=3 2 2 2|
 <|{mm_graph_selected}|toggle|lov={mm_graph_selector}|>
+
+<|{algorithm_selected}|selector|dropdown=True|lov={algorithm_selector}|label=Algorithm|>
+|>
 
 <|part|render={mm_graph_selected == 'Histogram'}|
 ### Histogram
