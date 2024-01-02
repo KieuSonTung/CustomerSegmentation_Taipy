@@ -4,7 +4,7 @@
 
 <|part|render={dv_graph_selected == 'Histogram'}|
 ### Histogram
-<|{x_selected}|selector|lov={select_x}|dropdown=True|label=Select x|>
+<|{x_selected_dv}|selector|lov={select_x}|dropdown=True|label=Select x|>
 
 <|{histo_dataset}|chart|type=histogram|rebuild|properties={properties_histo}|>
 |>
@@ -12,9 +12,9 @@
 <|part|render={dv_graph_selected == 'Scatter'}|
 ### Scatter
 <|layout|columns= 1 2|
-<|{x_selected}|selector|lov={select_x}|dropdown=True|label=Select x|>
+<|{x_selected_dv}|selector|lov={select_x}|dropdown=True|label=Select x|>
 
-<|{y_selected}|selector|lov={select_y}|dropdown|label=Select y|>
+<|{y_selected_dv}|selector|lov={select_y}|dropdown|label=Select y|>
 |>
 
 <|{scatter_dataset}|chart|type=scatter|rebuild|properties={properties_scatter}|mode=markers|>
