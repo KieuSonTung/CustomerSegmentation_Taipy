@@ -1,4 +1,4 @@
-# **Model**{: .color-primary} Management
+# **Model**{: .color-primary} Manager
 
 <|{mm_graph_selected}|toggle|lov={mm_graph_selector}|>
 

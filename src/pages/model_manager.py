@@ -36,4 +36,4 @@ mm_graph_selected = mm_graph_selector[0]
 algorithm_selector = ['AC']
 algorithm_selected = algorithm_selector[0]
 
-model_management_md = Markdown("src/pages/model_management_md.md")
+model_manager_md = Markdown("src/pages/model_manager_md.md")
