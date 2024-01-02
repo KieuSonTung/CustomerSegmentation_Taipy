@@ -32,8 +32,23 @@ def create_first_scenario(scenario_cfg):
 def on_change(state, var_name, var_value):
     if var_name in ["x_selected_dv", "y_selected_dv"]:
         update_chart_dv(state)
-    if var_name in ["x_selected_mm", "y_selected_mm"]:
+    elif var_name in ["x_selected_mm", "y_selected_mm"]:
         update_chart_mm(state)
+    elif var_name == "algorithm_selected":
+        update_charts(state, var_value)
+
+
+def update_charts(state, model_type):
+    model_mapper = {"AgglomerativeClustering": "AC", "KMeans": "KM"}
+    state.histo_pred_dataset = creation_histo_pred_dataset(
+        eval(f"state.predict_dataset_{model_mapper[model_type]}")
+    )
+    state.scatter_pred_dataset = creation_scatter_pred_dataset(
+        eval(f"state.predict_dataset_{model_mapper[model_type]}")
+    )
+    state.clusters_distribution_dataset = creation_clusters_distribution_dataset(
+        eval(f"state.predict_dataset_{model_mapper[model_type]}")
+    )
 
 
 def on_init(state):
@@ -47,7 +62,8 @@ scenario = create_first_scenario(scenario_cfg)
 ds = scenario.preprocessed_dataset.read()
 
 # run model
-results = scenario.trained_model.read()
+predict_dataset_AC = scenario.predict_dataset_AC.read()
+predict_dataset_KM = scenario.predict_dataset_KM.read()
 
 # Visualization datasets
 histo_dataset = creation_histo_dataset(ds)
@@ -55,9 +71,11 @@ scatter_dataset = creation_scatter_dataset(ds)
 heatmap_dataset = creation_heatmap_dataset(ds)
 
 # Model mangement datasets
-histo_pred_dataset = creation_histo_pred_dataset(results)
-scatter_pred_dataset = creation_scatter_pred_dataset(results)
-clusters_distribution_dataset = creation_clusters_distribution_dataset(results)
+histo_pred_dataset = creation_histo_pred_dataset(predict_dataset_AC)
+scatter_pred_dataset = creation_scatter_pred_dataset(predict_dataset_AC)
+clusters_distribution_dataset = creation_clusters_distribution_dataset(
+    predict_dataset_AC
+)
 
 # Columns selection
 select_x = ds.drop("Response", axis=1).columns.to_list()

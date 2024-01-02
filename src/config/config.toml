@@ -10,7 +10,11 @@ default_data = "None"
 
 [DATA_NODE.preprocessed_dataset]
 
-[DATA_NODE.trained_model]
+[DATA_NODE.predict_dataset_AC]
+storage_type = "csv"
+
+[DATA_NODE.predict_dataset_KM]
+storage_type = "csv"
 
 [TASK.preprocess_dataset]
 function = "algos.preprocess_dataset:function"
@@ -18,14 +22,20 @@ inputs = [ "initial_dataset:SECTION", "date:SECTION",]
 outputs = [ "preprocessed_dataset:SECTION",]
 skippable = "False:bool"
 
-[TASK.train_model]
-function = "algos.train_model:function"
+[TASK.train_model_AC]
+function = "algos.train_model_AC:function"
 inputs = [ "preprocessed_dataset:SECTION",]
-outputs = [ "trained_model:SECTION",]
+outputs = [ "predict_dataset_AC:SECTION",]
+skippable = "False:bool"
+
+[TASK.train_model_KM]
+function = "algos.train_model_KM:function"
+inputs = [ "preprocessed_dataset:SECTION",]
+outputs = [ "predict_dataset_KM:SECTION",]
 skippable = "False:bool"
 
 [SCENARIO.customer_segmentation]
-tasks = [ "preprocess_dataset:SECTION", "train_model:SECTION",]
+tasks = [ "preprocess_dataset:SECTION", "train_model_AC:SECTION", "train_model_KM:SECTION",]
 additional_data_nodes = []
 
 [SCENARIO.customer_segmentation.comparators]
