@@ -57,6 +57,7 @@ heatmap_dataset = creation_heatmap_dataset(ds)
 # Model mangement datasets
 histo_pred_dataset = creation_histo_pred_dataset(results)
 scatter_pred_dataset = creation_scatter_pred_dataset(results)
+clusters_distribution_dataset = creation_clusters_distribution_dataset(results)
 
 # Columns selection
 select_x = ds.drop("Response", axis=1).columns.to_list()

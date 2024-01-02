@@ -40,6 +40,22 @@ def creation_scatter_pred_dataset(ds: pd.DataFrame):
     return scatter_pred_dataset
 
 
+def creation_clusters_distribution_dataset(ds: pd.DataFrame):
+    clusters_distribution_dataset = ds.copy()
+    clusters_distribution_dataset["Clusters"] = (
+        clusters_distribution_dataset["Clusters"] + 1
+    )
+
+    clusters_distribution_dataset = (
+        clusters_distribution_dataset["Clusters"].value_counts().reset_index()
+    )
+    clusters_distribution_dataset["Clusters"] = clusters_distribution_dataset[
+        "Clusters"
+    ].apply(lambda x: "Cluster " + str(x))
+
+    return clusters_distribution_dataset
+
+
 def update_chart_mm(state):
     x_selected_mm = state.x_selected_mm
     y_selected_mm = state.y_selected_mm
@@ -71,7 +87,7 @@ def update_chart_mm(state):
 
 
 # Chart selection
-mm_graph_selector = ["Histogram", "Scatter"]
+mm_graph_selector = ["Histogram", "Scatter", "Metrics"]
 mm_graph_selected = mm_graph_selector[0]
 
 # Algorithm selection
@@ -83,16 +99,13 @@ properties_histo_pred = {}
 properties_scatter_pred = {}
 
 # Layout settings
-layout = {
-    "barmode": "overlay"
-}
+layout = {"barmode": "overlay"}
 
 # Options
-options = [
-    {
-        "opacity": 0.3
-    }
-]
+options = [{"opacity": 0.3}]
+
+# Temp silhouette score
+silhouette_score = 0.6
 
 # Page creation
 model_manager_md = Markdown("src/pages/model_manager_md.md")
