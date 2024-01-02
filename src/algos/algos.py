@@ -4,6 +4,7 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.decomposition import PCA
 from sklearn.cluster import AgglomerativeClustering, KMeans
+from sklearn.metrics import silhouette_score
 import warnings
 import sys
 import datetime as dt
@@ -161,9 +162,11 @@ def dimensionality_reduction(ds: pd.DataFrame, n_components=3):
 
 def train_model_AC(ds: pd.DataFrame):
     AC = AgglomerativeClustering(n_clusters=4)
-
     yhat_AC = AC.fit_predict(ds)
     ds["Clusters"] = yhat_AC
+
+    KM = KMeans(n_clusters=4)
+    yhat_KM = KM.fit_predict(ds)
 
     return ds
 
@@ -175,6 +178,14 @@ def train_model_KM(ds: pd.DataFrame):
     ds["Clusters"] = yhat_KM
 
     return ds
+
+
+def calculate_silhouette(ds: pd.DataFrame):
+    labels = ds["Clusters"]
+    X = ds.drop(columns="Clusters")
+    score = silhouette_score(X, labels)
+
+    return score
 
 
 # def visualize_clusters(ds: pd.DataFrame):

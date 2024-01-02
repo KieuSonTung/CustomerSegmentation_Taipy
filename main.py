@@ -35,25 +35,31 @@ def on_change(state, var_name, var_value):
     elif var_name in ["x_selected_mm", "y_selected_mm"]:
         update_chart_mm(state)
     elif var_name == "algorithm_selected":
+        update_variables(state, var_value)
         update_charts(state, var_value)
 
 
-def update_charts(state, model_type):
-    model_mapper = {"AgglomerativeClustering": "AC", "KMeans": "KM"}
+def update_charts(state, algorithm):
     state.histo_pred_dataset = creation_histo_pred_dataset(
-        eval(f"state.predict_dataset_{model_mapper[model_type]}")
+        eval(f"state.predict_dataset_{algorithm_mapper[algorithm]}")
     )
     state.scatter_pred_dataset = creation_scatter_pred_dataset(
-        eval(f"state.predict_dataset_{model_mapper[model_type]}")
+        eval(f"state.predict_dataset_{algorithm_mapper[algorithm]}")
     )
     state.clusters_distribution_dataset = creation_clusters_distribution_dataset(
-        eval(f"state.predict_dataset_{model_mapper[model_type]}")
+        eval(f"state.predict_dataset_{algorithm_mapper[algorithm]}")
     )
 
 
 def on_init(state):
     update_chart_dv(state)
     update_chart_mm(state)
+
+
+def update_variables(state, algorithm):
+    state.silhou_score = calculate_silhouette(
+        eval(f"state.predict_dataset_{algorithm_mapper[algorithm]}")
+    )
 
 
 scenario = create_first_scenario(scenario_cfg)
@@ -76,6 +82,8 @@ scatter_pred_dataset = creation_scatter_pred_dataset(predict_dataset_AC)
 clusters_distribution_dataset = creation_clusters_distribution_dataset(
     predict_dataset_AC
 )
+# Silhouette score
+silhou_score = calculate_silhouette(predict_dataset_AC)
 
 # Columns selection
 select_x = ds.drop("Response", axis=1).columns.to_list()
@@ -86,6 +94,7 @@ y_selected_dv = select_y[1]
 # Model manager page
 x_selected_mm = select_x[0]
 y_selected_mm = select_y[1]
+
 
 root_md = """
 <|toggle|theme|>
@@ -99,10 +108,12 @@ menu_lov = [
     ("Model Manager", Icon("src/images/model.svg", "Model Manager")),
 ]
 
+page = "Data Visualization"
+
 # Define pages
 pages = {
     "/": root_md,
-    "Data-Visualization": dv_data_visualization_md,
+    "Data-Visualization": data_visualization_md,
     "Model-Manager": model_manager_md,
 }
 

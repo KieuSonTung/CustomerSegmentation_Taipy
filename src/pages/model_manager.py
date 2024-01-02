@@ -94,6 +94,9 @@ mm_graph_selected = mm_graph_selector[0]
 algorithm_selector = ["AgglomerativeClustering", "KMeans"]
 algorithm_selected = algorithm_selector[0]
 
+# Algorithm mapper
+algorithm_mapper = {"AgglomerativeClustering": "AC", "KMeans": "KM"}
+
 # Chart properties
 properties_histo_pred = {}
 properties_scatter_pred = {}
@@ -103,9 +106,6 @@ layout = {"barmode": "overlay"}
 
 # Options
 options = [{"opacity": 0.3}]
-
-# Temp silhouette score
-silhouette_score = 0.6
 
 # Page creation
 model_manager_md = Markdown("src/pages/model_manager_md.md")

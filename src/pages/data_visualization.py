@@ -47,4 +47,4 @@ properties_histo = {}
 properties_scatter = {}
 
 # Page creation
-dv_data_visualization_md = Markdown("src/pages/data_visualization_md.md")
+data_visualization_md = Markdown("src/pages/data_visualization_md.md")
