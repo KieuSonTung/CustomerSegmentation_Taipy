@@ -7,8 +7,9 @@ import seaborn as sns
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
-from yellowbrick.cluster import KElbowVisualizer
+from sklearn.metrics import silhouette_score
 from sklearn.cluster import KMeans
+from yellowbrick.cluster import KElbowVisualizer
 import matplotlib.pyplot as plt, numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn.cluster import AgglomerativeClustering
@@ -119,11 +120,37 @@ def dimensionality_reduction(ds: pd.DataFrame, n_components=3):
 
 def train_model(ds: pd.DataFrame):
     AC = AgglomerativeClustering(n_clusters=4)
-
     yhat_AC = AC.fit_predict(ds)
     ds['Clusters'] = yhat_AC
 
+    KM = KMeans(n_clusters=4)
+    yhat_KM = KM.fit_predict(ds)
+    
     return ds
+
+def create_final_result(ds: pd.DataFrame):
+    
+    AC = AgglomerativeClustering(n_clusters=4)
+    yhat_AC = AC.fit_predict(ds)
+
+    KM = KMeans(n_clusters=4)
+    yhat_KM = KM.fit_predict(ds)
+
+    ac = ds.copy()
+    ac['labels'] = yhat_AC
+    ac["algo"] = "Agglomerative"
+    
+    km = ds.copy()  
+    km['labels'] = yhat_KM
+    km["algo"] = "KMeans"
+
+    ds = pd.concat([ac, km], ignore_index=True)
+    return ds
+
+def calculate_silhouette(ds: pd.DataFrame, labels):
+    silhouette_avg = silhouette_score(ds, labels)
+
+    return silhouette_avg
 
 # def visualize_clusters(ds: pd.DataFrame):
 #     x = ds["col1"]
