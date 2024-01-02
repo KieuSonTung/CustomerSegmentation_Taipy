@@ -41,12 +41,15 @@ ds = scenario.preprocessed_dataset.read()
 
 # run model
 results = scenario.trained_model.read()
-pred = results['Clusters']
 
-# visualization
+# Visualization datasets
 histo_dataset = creation_histo_dataset(ds)
 scatter_dataset = creation_scatter_dataset(ds)
 heatmap_dataset = creation_heatmap_dataset(ds)
+
+# Model mangement datasets
+histo_pred_dataset = creation_histo_pred_dataset(results)
+scatter_pred_dataset = creation_scatter_pred_dataset(results)
 
 # Columns selection
 select_x = ds.drop("Response", axis=1).columns.to_list()
