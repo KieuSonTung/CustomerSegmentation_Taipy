@@ -29,13 +29,6 @@ def create_first_scenario(scenario_cfg):
     return scenario
 
 
-def on_change(state, var_name, var_value):
-    if var_name in ["x_selected_dv", "y_selected_dv"]:
-        update_chart_dv(state)
-    if var_name in ["x_selected_mm", "y_selected_mm"]:
-        update_chart_mm(state)
-
-
 def on_init(state):
     update_chart_dv(state)
     update_chart_mm(state)
