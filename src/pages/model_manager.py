@@ -101,11 +101,11 @@ algorithm_mapper = {"AgglomerativeClustering": "AC", "KMeans": "KM"}
 properties_histo_pred = {}
 properties_scatter_pred = {}
 
-# Layout settings
-layout = {"barmode": "overlay"}
+# Layout settings for the histogram plot
+histo_layout = {"barmode": "overlay"}
 
-# Options
-options = [{"opacity": 0.3}]
+# Options for the histogram plot
+histo_options = [{"opacity": 0.3}]
 
 # Page creation
 model_manager_md = Markdown("src/pages/model_manager_md.md")
