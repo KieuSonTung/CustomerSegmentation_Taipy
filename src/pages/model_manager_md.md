@@ -26,20 +26,19 @@
 
 <|part|render={mm_graph_selected == 'Metrics'}|
 ### Metrics
-<|layout|columns= 1 1|
-<|part|
+<|layout|columns= 1 2 1|
+<|part|>
 
-<|Silhouette Score|text|>
+<|part|
+**Silhoette Score**
+
+<br/>
 
 <|{silhou_score:.4f}|indicator|value={silhou_score}|min=-1|max=1|>
 
 <|{clusters_distribution_dataset}|chart|type=pie|values=count|labels=Clusters|title=Clusters Distribution|>
 |>
 
-<|part|
-<|Another metric|text|>
+<|part||>
 |>
-
-|>
-
 |>
