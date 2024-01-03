@@ -2,13 +2,11 @@
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
-from sklearn.decomposition import PCA
 from sklearn.cluster import AgglomerativeClustering, KMeans
 from sklearn.metrics import silhouette_score
 import warnings
 import sys
 import datetime as dt
-from sklearn.model_selection import train_test_split
 
 if not sys.warnoptions:
     warnings.simplefilter("ignore")

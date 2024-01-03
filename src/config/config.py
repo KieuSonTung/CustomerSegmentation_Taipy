@@ -1,9 +1,8 @@
 import sys
-
 sys.path.append("src/algos")
 
 from algos import preprocess_dataset, train_model_AC, train_model_KM
-from taipy import Config, Scope
+from taipy import Config
 
 
 ##############################################################################################################################

@@ -11,14 +11,6 @@ from src.pages.data_visualization import *
 from src.pages.model_manager import *
 
 
-# Load configuration
-Config.load("src/config/config.toml")
-scenario_cfg = Config.scenarios["customer_segmentation"]
-
-# Execute the core service
-tp.Core().run()
-
-
 # Function that is called when there is a change in the menu control
 def menu_fct(state: State, var_name: str, var_value: Any):
     """This function handles navigation between pages
@@ -103,6 +95,13 @@ def update_variables(state: State, algorithm: str):
         eval(f"state.predict_dataset_{algorithm_mapper[algorithm]}")
     )
 
+
+# Load configuration
+Config.load("src/config/config.toml")
+scenario_cfg = Config.scenarios["customer_segmentation"]
+
+# Execute the core service
+tp.Core().run()
 
 # Create and submit a scenario
 scenario = create_first_scenario(scenario_cfg)
