@@ -135,68 +135,50 @@ def preprocess_dataset(initial_dataset: pd.DataFrame, date: dt.datetime = "None"
 
     return initial_dataset
 
-    # # creating a copy of data
-    # ds = initial_dataset.copy()
 
-    # # creating a subset of dataframe by dropping the features on deals accepted and promotions
-    # cols_del = ['AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1','AcceptedCmp2', 'Complain', 'Response']
-    # ds = ds.drop(cols_del, axis=1)
+def train_model_AC(ds: pd.DataFrame) -> pd.DataFrame:
+    """Fit and predict a dataframe using the Aggolomerative Clustering model
 
-    # # scaling
-    # scaler = StandardScaler()
-    # scaler.fit(ds)
-    # scaled_ds = pd.DataFrame(scaler.transform(ds), columns=ds.columns)
+    Args:
+        ds (pd.DataFrame): A dataframe
 
-    return scaled_ds
-
-
-def dimensionality_reduction(ds: pd.DataFrame, n_components=3):
-    pca = PCA(n_components=n_components)
-    pca.fit(ds)
-
-    cols = [f"col{i+1}" for i in range(n_components)]
-    PCA_ds = pd.DataFrame(pca.transform(ds), columns=(cols))
-
-    return PCA_ds
-
-
-def train_model_AC(ds: pd.DataFrame):
+    Returns:
+        pd.DataFrame: A dataframe with labels
+    """
     AC = AgglomerativeClustering(n_clusters=4)
     yhat_AC = AC.fit_predict(ds)
     ds["Clusters"] = yhat_AC
-
-    KM = KMeans(n_clusters=4)
-    yhat_KM = KM.fit_predict(ds)
 
     return ds
 
 
 def train_model_KM(ds: pd.DataFrame):
-    KM = KMeans(n_clusters=4)
+    """Fit and predict a dataframe using the KMeans model
 
+    Args:
+        ds (pd.DataFrame): A dataframe
+
+    Returns:
+        pd.DataFrame: A dataframe with labels
+    """
+    KM = KMeans(n_clusters=4)
     yhat_KM = KM.fit_predict(ds)
     ds["Clusters"] = yhat_KM
 
     return ds
 
 
-def calculate_silhouette(ds: pd.DataFrame):
+def calculate_silhouette(ds: pd.DataFrame) -> float:
+    """Calculate the silhouette score of a given dataframe
+
+    Args:
+        ds (pd.DataFrame): A dataframe with labels
+
+    Returns:
+        float: The silhouette score
+    """
     labels = ds["Clusters"]
     X = ds.drop(columns="Clusters")
     score = silhouette_score(X, labels)
 
     return score
-
-
-# def visualize_clusters(ds: pd.DataFrame):
-#     x = ds["col1"]
-#     y = ds["col2"]
-#     z = ds["col3"]
-
-#     cmap = colors.ListedColormap(["#682F2F", "#9E726F", "#D6B2B1", "#B9C0C9", "#9F8A78", "#F3AB60"])
-
-#     fig = plt.figure(figsize=(10,8))
-#     ax = plt.subplot(111, projection='3d', label="bla")
-#     ax.scatter(x, y, z, s=40, c=ds["Clusters"], marker='o', cmap=cmap)
-#     ax.set_title("The Plot Of The Clusters")
-#     plt.show()

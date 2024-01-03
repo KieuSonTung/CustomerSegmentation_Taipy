@@ -1,22 +1,44 @@
 import pandas as pd
-from taipy.gui import Markdown
+from taipy.gui import Markdown, State
 
 
-def creation_histo_dataset(ds: pd.DataFrame):
+def creation_histo_dataset(ds: pd.DataFrame) -> pd.DataFrame:
+    """Create a dataset for plotting a histogram
+
+    Args:
+        ds (pd.DataFrame): A dataframe
+
+    Returns:
+        pd.DataFrame: A dataframe
+    """
     histo_dataset = ds
 
     return histo_dataset
 
 
-def creation_scatter_dataset(ds: pd.DataFrame):
-    # To_Plot = [ "Income", "Recency", "Customer_For", "Age", "Spent", "Is_Parent"]
-    # scatter_dataset = ds[To_Plot]
+def creation_scatter_dataset(ds: pd.DataFrame) -> pd.DataFrame:
+    """Create a dataset for plotting a scatter plot
+
+    Args:
+        ds (pd.DataFrame): A dataframe
+
+    Returns:
+        pd.DataFrame: A dataframe
+    """
     scatter_dataset = ds
 
     return scatter_dataset
 
 
-def creation_heatmap_dataset(ds: pd.DataFrame):
+def creation_heatmap_dataset(ds: pd.DataFrame) -> pd.DataFrame:
+    """Create a dataset for plotting a correlation matrix
+
+    Args:
+        ds (pd.DataFrame): A dataframe
+
+    Returns:
+        pd.DataFrame: A dataframe
+    """
     corr_df = ds.corr()
     corrmat = {
         "Columns": corr_df.columns.tolist(),
@@ -27,7 +49,12 @@ def creation_heatmap_dataset(ds: pd.DataFrame):
     return corrmat
 
 
-def update_chart_dv(state):
+def update_chart_dv(state: State):
+    """Update the variables and dataframes based on the selected x and y
+
+    Args:
+        state (State): Accessor to the bound variables from callbacks
+    """
     x_selected_dv = state.x_selected_dv
     y_selected_dv = state.y_selected_dv
 

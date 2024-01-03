@@ -1,6 +1,5 @@
 import sys
 
-# sys.path.append('/Users/kieusontung/Library/CloudStorage/OneDrive-Personal/Work/Viettel/HoaPhat/CustomerSegmentation/src')
 sys.path.append("src/algos")
 
 from algos import preprocess_dataset, train_model_AC, train_model_KM
@@ -30,7 +29,7 @@ predict_dataset_KM_cfg = Config.configure_csv_data_node(id="predict_dataset_KM")
 # Creation of the tasks
 ##############################################################################################################################
 
-# initial_dataset --> preprocess dataset --> preprocessed_dataset
+# initial_dataset --> preprocess_dataset --> preprocessed_dataset
 task_preprocess_dataset_cfg = Config.configure_task(
     id="preprocess_dataset",
     input=[initial_dataset_cfg, date_cfg],
@@ -38,7 +37,7 @@ task_preprocess_dataset_cfg = Config.configure_task(
     output=preprocessed_dataset_cfg,
 )
 
-# preprocessed_dataset --> create train_model data --> trained_model
+# preprocessed_dataset --> train_model --> predict_dataset
 task_train_model_AC_cfg = Config.configure_task(
     id="train_model_AC",
     input=preprocessed_dataset_cfg,

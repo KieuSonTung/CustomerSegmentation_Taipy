@@ -1,8 +1,16 @@
 import pandas as pd
-from taipy.gui import Markdown
+from taipy.gui import Markdown, State
 
 
-def creation_histo_pred_dataset(ds: pd.DataFrame):
+def creation_histo_pred_dataset(ds: pd.DataFrame) -> pd.DataFrame:
+    """Create a dataset for plotting a histogram
+
+    Args:
+        ds (pd.DataFrame): A dataframe
+
+    Returns:
+        pd.DataFrame: A dataframe
+    """
     histo_pred_dataset = ds.copy()
     histo_pred_dataset["Clusters"] = histo_pred_dataset["Clusters"] + 1
     dfs = []
@@ -21,7 +29,15 @@ def creation_histo_pred_dataset(ds: pd.DataFrame):
     return histo_pred_dataset
 
 
-def creation_scatter_pred_dataset(ds: pd.DataFrame):
+def creation_scatter_pred_dataset(ds: pd.DataFrame) -> pd.DataFrame:
+    """Create a dataset for plotting a scatter plot
+
+    Args:
+        ds (pd.DataFrame): A dataframe
+
+    Returns:
+        pd.DataFrame: A dataframe
+    """
     scatter_pred_dataset = ds.copy()
     scatter_pred_dataset["Clusters"] = scatter_pred_dataset["Clusters"] + 1
     dfs = []
@@ -40,7 +56,15 @@ def creation_scatter_pred_dataset(ds: pd.DataFrame):
     return scatter_pred_dataset
 
 
-def creation_clusters_distribution_dataset(ds: pd.DataFrame):
+def creation_clusters_distribution_dataset(ds: pd.DataFrame) -> pd.DataFrame:
+    """Create a dataset for ploting a clusters distribution plot
+
+    Args:
+        ds (pd.DataFrame): A dataframe
+
+    Returns:
+        pd.DataFrame: A dataframe
+    """
     clusters_distribution_dataset = ds.copy()
     clusters_distribution_dataset["Clusters"] = (
         clusters_distribution_dataset["Clusters"] + 1
@@ -56,7 +80,12 @@ def creation_clusters_distribution_dataset(ds: pd.DataFrame):
     return clusters_distribution_dataset
 
 
-def update_chart_mm(state):
+def update_chart_mm(state: State):
+    """Update variables and dataframes based on the selected x and y
+
+    Args:
+        state (State): Accessor to the bound variables from callbacks
+    """
     x_selected_mm = state.x_selected_mm
     y_selected_mm = state.y_selected_mm
 

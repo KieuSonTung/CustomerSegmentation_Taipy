@@ -1,7 +1,10 @@
+from typing import Any
+from taipy.core.config import ScenarioConfig
+from taipy.core.scenario.scenario import Scenario
+
 from src.algos.algos import *
-import pandas as pd
 import taipy as tp
-from taipy.gui import Gui, Icon, navigate
+from taipy.gui import Gui, Icon, navigate, State
 from src.config.config import scenario_cfg
 from taipy.config import Config
 from src.pages.data_visualization import *
@@ -12,24 +15,46 @@ from src.pages.model_manager import *
 Config.load("src/config/config.toml")
 scenario_cfg = Config.scenarios["customer_segmentation"]
 
-# Execute the scenario
+# Execute the core service
 tp.Core().run()
 
 
 # Function that is called when there is a change in the menu control
-def menu_fct(state, var_name, var_value):
+def menu_fct(state: State, var_name: str, var_value: Any):
+    """This function handles navigation between pages
+
+    Args:
+        state (State): Accessor to the bound variables from callbacks
+        var_name (str): Variable name
+        var_value (Any): Variable value
+    """
     state.page = var_value["args"][0]
     navigate(state, state.page.replace(" ", "-"))
 
 
 # Create and submit the first scenario
-def create_first_scenario(scenario_cfg):
+def create_first_scenario(scenario_cfg: ScenarioConfig) -> Scenario:
+    """Create and submit the scenario config
+
+    Args:
+        scenario_cfg (ScenarioConfig): A scenario config
+
+    Returns:
+        Scenario: The created scenario object
+    """
     scenario = tp.create_scenario(scenario_cfg)
     tp.submit(scenario)
     return scenario
 
 
-def on_change(state, var_name, var_value):
+def on_change(state: State, var_name: str, var_value: Any):
+    """Update chart(s) when a variable value changed
+
+    Args:
+        state (State): Accessor to the bound variables from callbacks
+        var_name (str): Variable name
+        var_value (Any): Variable value
+    """
     if var_name in ["x_selected_dv", "y_selected_dv"]:
         update_chart_dv(state)
     elif var_name in ["x_selected_mm", "y_selected_mm"]:
@@ -39,7 +64,13 @@ def on_change(state, var_name, var_value):
         update_charts(state, var_value)
 
 
-def update_charts(state, algorithm):
+def update_charts(state: State, algorithm: str):
+    """Update dataframes used for plotting
+
+    Args:
+        state (State): Accessor to the bound variables from callbacks
+        algorithm (str): Algorithm name
+    """
     state.histo_pred_dataset = creation_histo_pred_dataset(
         eval(f"state.predict_dataset_{algorithm_mapper[algorithm]}")
     )
@@ -51,23 +82,35 @@ def update_charts(state, algorithm):
     )
 
 
-def on_init(state):
+def on_init(state: State):
+    """Initialize charts
+
+    Args:
+        state (State): Accessor to the bound variables from callbacks
+    """
     update_chart_dv(state)
     update_chart_mm(state)
 
 
-def update_variables(state, algorithm):
+def update_variables(state: State, algorithm: str):
+    """Update variable(s) when selecting different algorithms
+
+    Args:
+        state (State): Accessor to the bound variables from callbacks
+        algorithm (str): Algorithm name
+    """
     state.silhou_score = calculate_silhouette(
         eval(f"state.predict_dataset_{algorithm_mapper[algorithm]}")
     )
 
 
+# Create and submit a scenario
 scenario = create_first_scenario(scenario_cfg)
 
-# read dataset
+# Read the preprocessed dataset
 ds = scenario.preprocessed_dataset.read()
 
-# run model
+# Read the predicted datasets
 predict_dataset_AC = scenario.predict_dataset_AC.read()
 predict_dataset_KM = scenario.predict_dataset_KM.read()
 
@@ -82,6 +125,7 @@ scatter_pred_dataset = creation_scatter_pred_dataset(predict_dataset_AC)
 clusters_distribution_dataset = creation_clusters_distribution_dataset(
     predict_dataset_AC
 )
+
 # Silhouette score
 silhou_score = calculate_silhouette(predict_dataset_AC)
 
@@ -95,22 +139,20 @@ y_selected_dv = select_y[1]
 x_selected_mm = select_x[0]
 y_selected_mm = select_y[1]
 
-
+# Root page
 root_md = """
 <|toggle|theme|>
 <|menu|label=Menu|lov={menu_lov}|on_action=menu_fct|>
 """
 
+# Pages navigation
 page = "Data Visualization"
-
 menu_lov = [
     ("Data Visualization", Icon("src/images/histogram_menu.svg", "Data Visualization")),
     ("Model Manager", Icon("src/images/model.svg", "Model Manager")),
 ]
 
-page = "Data Visualization"
-
-# Define pages
+# Define pages structure
 pages = {
     "/": root_md,
     "Data-Visualization": data_visualization_md,
