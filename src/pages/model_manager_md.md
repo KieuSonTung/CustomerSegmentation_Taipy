@@ -30,7 +30,7 @@
 <|part|>
 
 <|part|
-**Silhoette Score**
+**Silhouette Score**
 
 <br/>
 
