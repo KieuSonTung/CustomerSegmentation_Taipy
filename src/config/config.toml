@@ -1,5 +1,3 @@
-[CORE]
-core_version = "3.0"
 [TAIPY]
 
 [DATA_NODE.initial_dataset]
