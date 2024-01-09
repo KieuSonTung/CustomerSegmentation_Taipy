@@ -129,7 +129,7 @@ clusters_distribution_dataset = creation_clusters_distribution_dataset(
 silhou_score = calculate_silhouette(predict_dataset_AC)
 
 # Columns selection
-select_x = ds.drop("Response", axis=1).columns.to_list()
+select_x = ds.columns.to_list()
 select_y = select_x
 # Data visualization page
 x_selected_dv = select_x[0]

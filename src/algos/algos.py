@@ -1,7 +1,7 @@
 # Importing the Libraries
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.cluster import AgglomerativeClustering, KMeans
 from sklearn.metrics import silhouette_score
 import warnings
@@ -123,15 +123,24 @@ def preprocess_dataset(initial_dataset: pd.DataFrame, date: dt.datetime = "None"
     initial_dataset = initial_dataset[(initial_dataset["Age"] < 90)]
     initial_dataset = initial_dataset[(initial_dataset["Income"] < 600000)]
 
-    # label encoding
+    # Label encoding
     s = initial_dataset.dtypes == "object"
     object_cols = list(s[s].index)
 
     LE = LabelEncoder()
     for i in object_cols:
         initial_dataset[i] = initial_dataset[[i]].apply(LE.fit_transform)
+    
+    # Creating a subset of dataframe by dropping the features on deals accepted and promotions
+    cols_del = ['AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1','AcceptedCmp2', 'Complain', 'Response']
+    initial_dataset = initial_dataset.drop(cols_del, axis=1)
+    
+    # Scaling
+    scaler = StandardScaler()
+    scaler.fit(initial_dataset)
+    scaled_ds = pd.DataFrame(scaler.transform(initial_dataset),columns=initial_dataset.columns)
 
-    return initial_dataset
+    return scaled_ds
 
 
 def train_model_AC(ds: pd.DataFrame) -> pd.DataFrame:
