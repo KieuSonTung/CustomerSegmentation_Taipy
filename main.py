@@ -78,6 +78,15 @@ def update_charts(state: State, algorithm: str):
     ) = creation_profiling_dataset(
         eval(f"state.predict_dataset_{algorithm_mapper[algorithm]}")
     )
+    (
+        state.distribution_cluster_1,
+        state.distribution_cluster_2,
+        state.distribution_cluster_3,
+        state.distribution_cluster_4
+    ) = creation_profiling_dataset_2(
+        eval(f"state.predict_dataset_{algorithm_mapper[algorithm]}"),
+        state.x_selected_mm
+    )
 
 
 def on_init(state: State):
@@ -155,6 +164,11 @@ y_selected_dv = select_y[1]
 # Model manager page
 x_selected_mm = select_x[0]
 y_selected_mm = select_y[1]
+
+# Profiling dataset 2
+distribution_cluster_1, distribution_cluster_2, distribution_cluster_3, distribution_cluster_4 = creation_profiling_dataset_2(
+    predict_dataset_AC, x_selected_mm
+)
 
 # Root page
 root_md = """

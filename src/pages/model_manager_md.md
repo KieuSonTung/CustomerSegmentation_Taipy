@@ -43,9 +43,18 @@
 
 <|part|render={mm_graph_selected == 'Profiling'}|
 ### Profiling
+<|{x_selected_mm}|selector|lov={select_x}|dropdown=True|label=Select x|>
 **Mean**
 <|{profiling_dataset_mean}|table|>
 
 **Median**
 <|{profiling_dataset_median}|table|>
+
+**Test**
+<|layout|columns=1 4|
+<|{distribution_cluster_1}|table|>
+<|{distribution_cluster_2}|table|>
+<|{distribution_cluster_3}|table|>
+<|{distribution_cluster_4}|table|>
+|>
 |>
