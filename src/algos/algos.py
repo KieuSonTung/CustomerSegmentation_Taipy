@@ -130,33 +130,44 @@ def preprocess_dataset(initial_dataset: pd.DataFrame, date: dt.datetime = "None"
     LE = LabelEncoder()
     for i in object_cols:
         initial_dataset[i] = initial_dataset[[i]].apply(LE.fit_transform)
-    
+
     # Creating a subset of dataframe by dropping the features on deals accepted and promotions
-    cols_del = ['AcceptedCmp3', 'AcceptedCmp4', 'AcceptedCmp5', 'AcceptedCmp1','AcceptedCmp2', 'Complain', 'Response']
+    cols_del = [
+        "AcceptedCmp3",
+        "AcceptedCmp4",
+        "AcceptedCmp5",
+        "AcceptedCmp1",
+        "AcceptedCmp2",
+        "Complain",
+        "Response",
+    ]
     initial_dataset = initial_dataset.drop(cols_del, axis=1)
-    
+    initial_dataset = initial_dataset.reset_index(drop=True)
+    unscaled_ds = initial_dataset.copy()
+
     # Scaling
     scaler = StandardScaler()
     scaler.fit(initial_dataset)
-    scaled_ds = pd.DataFrame(scaler.transform(initial_dataset),columns=initial_dataset.columns)
+    scaled_ds = pd.DataFrame(
+        scaler.transform(initial_dataset), columns=initial_dataset.columns
+    )
 
-    return scaled_ds
+    return scaled_ds, unscaled_ds
 
 
-def train_model_AC(ds: pd.DataFrame) -> pd.DataFrame:
+def train_model_AC(ds: pd.DataFrame):
     """Fit and predict a dataframe using the Aggolomerative Clustering model
 
     Args:
         ds (pd.DataFrame): A dataframe
 
     Returns:
-        pd.DataFrame: A dataframe with labels
+        ndarray: Predictions
     """
     AC = AgglomerativeClustering(n_clusters=4)
     yhat_AC = AC.fit_predict(ds)
-    ds["Clusters"] = yhat_AC
 
-    return ds
+    return yhat_AC
 
 
 def train_model_KM(ds: pd.DataFrame):
@@ -166,13 +177,12 @@ def train_model_KM(ds: pd.DataFrame):
         ds (pd.DataFrame): A dataframe
 
     Returns:
-        pd.DataFrame: A dataframe with labels
+        ndarray: Prediction
     """
     KM = KMeans(n_clusters=4)
     yhat_KM = KM.fit_predict(ds)
-    ds["Clusters"] = yhat_KM
 
-    return ds
+    return yhat_KM
 
 
 def calculate_silhouette(ds: pd.DataFrame) -> float:

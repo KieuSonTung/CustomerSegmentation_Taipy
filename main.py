@@ -107,16 +107,23 @@ tp.Core().run()
 scenario = create_first_scenario(scenario_cfg)
 
 # Read the preprocessed dataset
-ds = scenario.preprocessed_dataset.read()
+ds_scaled = scenario.preprocessed_dataset_scaled.read()
+ds_unscaled = scenario.preprocess_dataset_unscaled.read()
 
 # Read the predicted datasets
-predict_dataset_AC = scenario.predict_dataset_AC.read()
-predict_dataset_KM = scenario.predict_dataset_KM.read()
+predictions_AC = scenario.predictions_AC.read()
+predictions_KM = scenario.predictions_KM.read()
+
+# Concat predictions
+predict_dataset_AC = ds_unscaled.copy()
+predict_dataset_AC["Clusters"] = predictions_AC.iloc[:, 0]
+predict_dataset_KM = ds_unscaled.copy()
+predict_dataset_KM["Clusters"] = predictions_KM.iloc[:, 0]
 
 # Visualization datasets
-histo_dataset = creation_histo_dataset(ds)
-scatter_dataset = creation_scatter_dataset(ds)
-heatmap_dataset = creation_heatmap_dataset(ds)
+histo_dataset = creation_histo_dataset(ds_unscaled)
+scatter_dataset = creation_scatter_dataset(ds_unscaled)
+heatmap_dataset = creation_heatmap_dataset(ds_unscaled)
 
 # Model mangement datasets
 histo_pred_dataset = creation_histo_pred_dataset(predict_dataset_AC)
@@ -129,7 +136,7 @@ clusters_distribution_dataset = creation_clusters_distribution_dataset(
 silhou_score = calculate_silhouette(predict_dataset_AC)
 
 # Columns selection
-select_x = ds.columns.to_list()
+select_x = ds_unscaled.columns.to_list()
 select_y = select_x
 # Data visualization page
 x_selected_dv = select_x[0]
