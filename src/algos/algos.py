@@ -96,6 +96,9 @@ def preprocess_dataset(initial_dataset: pd.DataFrame, date: dt.datetime = "None"
         }
     )
 
+    # Calculate Frequency
+    initial_dataset.loc[:, 'Frequency'] = initial_dataset[['NumWebPurchases', 'NumCatalogPurchases', 'NumStorePurchases']].sum(axis=1)
+
     # For clarity
     initial_dataset = initial_dataset.rename(
         columns={
