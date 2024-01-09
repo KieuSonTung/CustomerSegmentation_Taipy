@@ -119,6 +119,7 @@ def preprocess_dataset(initial_dataset: pd.DataFrame, date: dt.datetime = "None"
         "Z_Revenue",
         "Year_Birth",
         "ID",
+        "Recency"
     ]
     initial_dataset = initial_dataset.drop(to_drop, axis=1)
 
