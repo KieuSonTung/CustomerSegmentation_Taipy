@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import pandas as pd
 from taipy.gui import Markdown, State
 
@@ -80,6 +82,28 @@ def creation_clusters_distribution_dataset(ds: pd.DataFrame) -> pd.DataFrame:
     return clusters_distribution_dataset
 
 
+def creation_profiling_dataset(ds: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    """Create two datasets for displaying
+
+    Args:
+        ds (pd.DataFrame): A dataframe
+
+    Returns:
+        pd.DataFrame, pd.DataFrame: Dataframes
+    """
+    profiling_dataset = ds.copy()
+    profiling_dataset["Clusters"] = profiling_dataset["Clusters"] + 1
+
+    profiling_dataset_mean = (
+        profiling_dataset.groupby("Clusters").agg("mean").round(2).reset_index()
+    )
+    profiling_dataset_median = (
+        profiling_dataset.groupby("Clusters").agg("median").round(2).reset_index()
+    )
+
+    return profiling_dataset_mean, profiling_dataset_median
+
+
 def update_chart_mm(state: State):
     """Update variables and dataframes based on the selected x and y
 
@@ -116,7 +140,7 @@ def update_chart_mm(state: State):
 
 
 # Chart selection
-mm_graph_selector = ["Histogram", "Scatter", "Metrics"]
+mm_graph_selector = ["Histogram", "Scatter", "Metrics", "Profiling"]
 mm_graph_selected = mm_graph_selector[0]
 
 # Algorithm selection

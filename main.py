@@ -72,6 +72,12 @@ def update_charts(state: State, algorithm: str):
     state.clusters_distribution_dataset = creation_clusters_distribution_dataset(
         eval(f"state.predict_dataset_{algorithm_mapper[algorithm]}")
     )
+    (
+        state.profiling_dataset_mean,
+        state.profiling_dataset_median,
+    ) = creation_profiling_dataset(
+        eval(f"state.predict_dataset_{algorithm_mapper[algorithm]}")
+    )
 
 
 def on_init(state: State):
@@ -132,6 +138,11 @@ clusters_distribution_dataset = creation_clusters_distribution_dataset(
     predict_dataset_AC
 )
 
+# Profiling dataset
+profiling_dataset_mean, profiling_dataset_median = creation_profiling_dataset(
+    predict_dataset_AC
+)
+
 # Silhouette score
 silhou_score = calculate_silhouette(predict_dataset_AC)
 
@@ -168,4 +179,4 @@ pages = {
 # Run the GUI
 if __name__ == "__main__":
     gui = Gui(pages=pages)
-    gui.run(title="Customer Segmetation", dark_mode=False, port=8866, use_reloader=True)
+    gui.run(title="Customer Segmetation", dark_mode=False, port=8866)

@@ -31,14 +31,21 @@
 
 <|part|
 **Silhouette Score**
-
 <br/>
-
 <|{silhou_score:.4f}|indicator|value={silhou_score}|min=-1|max=1|>
 
 <|{clusters_distribution_dataset}|chart|type=pie|values=count|labels=Clusters|title=Clusters Distribution|>
 |>
 
-<|part||>
+<|part|>
 |>
+|>
+
+<|part|render={mm_graph_selected == 'Profiling'}|
+### Profiling
+**Mean**
+<|{profiling_dataset_mean}|table|>
+
+**Median**
+<|{profiling_dataset_median}|table|>
 |>
