@@ -52,9 +52,9 @@
 
 **Test**
 <|layout|columns=1 4|
-<|{distribution_cluster_1}|table|>
-<|{distribution_cluster_2}|table|>
-<|{distribution_cluster_3}|table|>
-<|{distribution_cluster_4}|table|>
+<|{distribution_cluster_1}|table|rebuild|>
+<|{distribution_cluster_2}|table|rebuild|>
+<|{distribution_cluster_3}|table|rebuild|>
+<|{distribution_cluster_4}|table|rebuild|>
 |>
 |>

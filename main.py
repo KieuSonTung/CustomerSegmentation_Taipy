@@ -63,7 +63,7 @@ def update_charts(state: State, algorithm: str):
         state (State): Accessor to the bound variables from callbacks
         algorithm (str): Algorithm name
     """
-    x_selected = state.x_selected_mm
+    x_selected_mm = state.x_selected_mm
     state.histo_pred_dataset = creation_histo_pred_dataset(
         eval(f"state.predict_dataset_{algorithm_mapper[algorithm]}")
     )
@@ -86,7 +86,7 @@ def update_charts(state: State, algorithm: str):
         state.distribution_cluster_4
     ) = creation_profiling_dataset_2(
         eval(f"state.predict_dataset_{algorithm_mapper[algorithm]}"), 
-        x_selected=x_selected
+        x_selected=x_selected_mm
     )
 
 

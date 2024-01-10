@@ -105,7 +105,7 @@ def creation_profiling_dataset(ds: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataF
 
 def creation_profiling_dataset_2(ds: pd.DataFrame, x_selected=None) -> pd.DataFrame:
     if x_selected is None:
-        x_selected = 'Frequency'
+        x_selected = 'Education'
 
     profiling_dataset = ds.copy()
     profiling_dataset["Clusters"] = profiling_dataset["Clusters"] + 1
@@ -166,10 +166,12 @@ def update_chart_mm(state: State):
         "name[4]": "Cluster 4",
     }
 
-    state.distribution_cluster_1 = state.distribution_cluster_1
-    state.distribution_cluster_2 = state.distribution_cluster_2
-    state.distribution_cluster_3 = state.distribution_cluster_3
-    state.distribution_cluster_4 = state.distribution_cluster_4
+    # state.distribution_cluster_1,
+    # state.distribution_cluster_2,
+    # state.distribution_cluster_3,
+    # state.distribution_cluster_4 = creation_profiling_dataset_2(
+    #     "state.predict_dataset_AC", 
+    #     x_selected=x_selected_mm)
 
 
 # Chart selection
