@@ -50,8 +50,8 @@
 **Median**
 <|{profiling_dataset_median}|table|>
 
-**Test**
-<|layout|columns=1 4|
+**Distribution of each cluster**
+<|layout|columns=1 1 1 1|
 <|{distribution_cluster_1}|table|rebuild|>
 <|{distribution_cluster_2}|table|rebuild|>
 <|{distribution_cluster_3}|table|rebuild|>
