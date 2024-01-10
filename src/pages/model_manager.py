@@ -97,11 +97,14 @@ def creation_profiling_dataset(ds: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataF
     profiling_dataset_mean = (
         profiling_dataset.groupby("Clusters").agg("mean").round(2).reset_index()
     )
-    profiling_dataset_median = (
-        profiling_dataset.groupby("Clusters").agg("median").round(2).reset_index()
+    profiling_dataset_min = (
+        profiling_dataset.groupby("Clusters").agg("min").round(2).reset_index()
+    )
+    profiling_dataset_max = (
+        profiling_dataset.groupby("Clusters").agg("max").round(2).reset_index()
     )
 
-    return profiling_dataset_mean, profiling_dataset_median
+    return profiling_dataset_mean, profiling_dataset_min, profiling_dataset_max
 
 def creation_profiling_dataset_2(ds: pd.DataFrame, x_selected=None) -> pd.DataFrame:
     if x_selected is None:

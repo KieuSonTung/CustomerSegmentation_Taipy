@@ -47,8 +47,11 @@
 **Mean**
 <|{profiling_dataset_mean}|table|>
 
-**Median**
-<|{profiling_dataset_median}|table|>
+**Min**
+<|{profiling_dataset_min}|table|>
+
+**Max**
+<|{profiling_dataset_max}|table|>
 
 **Distribution of each cluster**
 <|layout|columns=1 1 1 1|

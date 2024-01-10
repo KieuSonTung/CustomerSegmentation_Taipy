@@ -76,7 +76,8 @@ def update_charts(state: State, algorithm: str):
     )
     (
         state.profiling_dataset_mean,
-        state.profiling_dataset_median,
+        state.profiling_dataset_min,
+        state.profiling_dataset_max
     ) = creation_profiling_dataset(
         eval(f"state.predict_dataset_{algorithm_mapper[algorithm]}")
     )
@@ -161,7 +162,7 @@ clusters_distribution_dataset = creation_clusters_distribution_dataset(
 )
 
 # Profiling dataset
-profiling_dataset_mean, profiling_dataset_median = creation_profiling_dataset(
+profiling_dataset_mean, profiling_dataset_min, profiling_dataset_max = creation_profiling_dataset(
     predict_dataset_AC
 )
 
