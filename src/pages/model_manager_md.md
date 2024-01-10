@@ -44,20 +44,15 @@
 <|part|render={mm_graph_selected == 'Profiling'}|
 ### Profiling
 <|{x_selected_mm}|selector|lov={select_x}|dropdown=True|label=Select x|>
-**Mean**
-<|{profiling_dataset_mean}|table|>
-
-**Min**
-<|{profiling_dataset_min}|table|>
-
-**Max**
-<|{profiling_dataset_max}|table|>
 
 **Distribution of each cluster**
-<|layout|columns=1 1 1 1|
+
+**Cluster 1**
 <|{distribution_cluster_1}|table|rebuild|>
+**Cluster 2**
 <|{distribution_cluster_2}|table|rebuild|>
+**Cluster 3**
 <|{distribution_cluster_3}|table|rebuild|>
+**Cluster 4**
 <|{distribution_cluster_4}|table|rebuild|>
-|>
 |>
