@@ -106,6 +106,34 @@ def creation_profiling_dataset(ds: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataF
 
     return profiling_dataset_mean, profiling_dataset_min, profiling_dataset_max
 
+def creation_profiling_dataset_2(ds: pd.DataFrame, x_selected=None) -> pd.DataFrame:
+    if x_selected is None:
+        x_selected = 'Education'
+
+    profiling_dataset = ds.copy()
+    profiling_dataset["Clusters"] = profiling_dataset["Clusters"] + 1
+
+    dataset_cluster_1 = profiling_dataset[profiling_dataset['Clusters'] == 1]
+    dataset_cluster_2 = profiling_dataset[profiling_dataset['Clusters'] == 2]
+    dataset_cluster_3 = profiling_dataset[profiling_dataset['Clusters'] == 3]
+    dataset_cluster_4 = profiling_dataset[profiling_dataset['Clusters'] == 4]
+
+    distribution_cluster_1 = dataset_cluster_1.describe().reset_index()
+    distribution_cluster_2 = dataset_cluster_2.describe().reset_index()
+    distribution_cluster_3 = dataset_cluster_3.describe().reset_index()
+    distribution_cluster_4 = dataset_cluster_4.describe().reset_index()
+
+    distribution_cluster_1 = distribution_cluster_1[distribution_cluster_1['index'].isin(['min', 'max', 'mean'])]
+    distribution_cluster_2 = distribution_cluster_2[distribution_cluster_2['index'].isin(['min', 'max', 'mean'])]
+    distribution_cluster_3 = distribution_cluster_3[distribution_cluster_3['index'].isin(['min', 'max', 'mean'])]
+    distribution_cluster_4 = distribution_cluster_4[distribution_cluster_4['index'].isin(['min', 'max', 'mean'])]
+
+    distribution_cluster_1 = pd.DataFrame(distribution_cluster_1[['index', x_selected]])
+    distribution_cluster_2 = pd.DataFrame(distribution_cluster_2[['index', x_selected]])
+    distribution_cluster_3 = pd.DataFrame(distribution_cluster_3[['index', x_selected]])
+    distribution_cluster_4 = pd.DataFrame(distribution_cluster_4[['index', x_selected]])
+
+    return distribution_cluster_1, distribution_cluster_2, distribution_cluster_3, distribution_cluster_4
 
 def update_chart_mm(state: State):
     """Update variables and dataframes based on the selected x and y

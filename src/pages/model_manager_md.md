@@ -43,6 +43,7 @@
 
 <|part|render={mm_graph_selected == 'Profiling'}|
 ### Profiling
+<|{x_selected_mm}|selector|lov={select_x}|dropdown=True|label=Select x|>
 **Mean**
 <|{profiling_dataset_mean}|table|>
 
@@ -51,4 +52,12 @@
 
 **Max**
 <|{profiling_dataset_max}|table|>
+
+**Test**
+<|layout|columns=1 4|
+<|{distribution_cluster_1}|table|rebuild|>
+<|{distribution_cluster_2}|table|rebuild|>
+<|{distribution_cluster_3}|table|rebuild|>
+<|{distribution_cluster_4}|table|rebuild|>
+|>
 |>
