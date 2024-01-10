@@ -103,7 +103,10 @@ def creation_profiling_dataset(ds: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataF
 
     return profiling_dataset_mean, profiling_dataset_median
 
-def creation_profiling_dataset_2(ds: pd.DataFrame, x_selected) -> pd.DataFrame:
+def creation_profiling_dataset_2(ds: pd.DataFrame, x_selected=None) -> pd.DataFrame:
+    if x_selected is None:
+        x_selected = 'Frequency'
+
     profiling_dataset = ds.copy()
     profiling_dataset["Clusters"] = profiling_dataset["Clusters"] + 1
 
