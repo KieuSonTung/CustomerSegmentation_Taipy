@@ -51,6 +51,7 @@ def on_change(state: State, var_name: str, var_value: Any):
         update_chart_dv(state)
     elif var_name in ["x_selected_mm", "y_selected_mm"]:
         update_chart_mm(state)
+        update_dist_df(state)
     elif var_name == "algorithm_selected":
         update_variables(state, var_value)
         update_charts(state, var_value)
@@ -87,6 +88,17 @@ def update_charts(state: State, algorithm: str):
     ) = creation_profiling_dataset_2(
         eval(f"state.predict_dataset_{algorithm_mapper[algorithm]}"), 
         x_selected=x_selected_mm
+    )
+
+def update_dist_df(state: State):
+    (
+        state.distribution_cluster_1,
+        state.distribution_cluster_2,
+        state.distribution_cluster_3,
+        state.distribution_cluster_4
+    ) = creation_profiling_dataset_2(
+        eval("state.predict_dataset_AC"), 
+        x_selected=state.x_selected_mm
     )
 
 

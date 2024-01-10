@@ -166,13 +166,6 @@ def update_chart_mm(state: State):
         "name[4]": "Cluster 4",
     }
 
-    # state.distribution_cluster_1,
-    # state.distribution_cluster_2,
-    # state.distribution_cluster_3,
-    # state.distribution_cluster_4 = creation_profiling_dataset_2(
-    #     "state.predict_dataset_AC", 
-    #     x_selected=x_selected_mm)
-
 
 # Chart selection
 mm_graph_selector = ["Histogram", "Scatter", "Metrics", "Profiling"]
